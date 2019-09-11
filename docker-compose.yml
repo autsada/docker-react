@@ -1,0 +1,23 @@
+version: '3'
+services:
+  web:
+    build:
+      # context --> where the context is from
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - '3000:3000'
+    volumes:
+      # use node_modules in the container (no mapping to local machine)
+      - /usr/app/node_modules
+      # mapping other contents in the container to . (current dicrectory on local machine)
+      - .:/usr/app
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /usr/app/node_modules
+      - .:/usr/app
+    # override command in Dockerfile with below command
+    command: ['npm', 'run', 'test']
